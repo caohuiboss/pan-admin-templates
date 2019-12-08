@@ -1,6 +1,6 @@
 import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { resetRouter } from '@/router'
+import { resetRouter, constantRoutes } from '@/router'
 
 const state = {
   token: getToken(),
@@ -32,11 +32,12 @@ const mutations = {
   SET_ROLES: (state, roles) => {
     state.roles = roles
   },
-  SET_MENUS: (state, menus) => {
-    state.menus = menus
-  },
   SET_BUTTONS: (state, buttons) => {
     state.buttons = buttons
+  },
+  SET_ROUTES: (state, routes) => {
+    state.addRoutes = routes
+    state.routes = constantRoutes.concat(routes)
   }
 }
 
@@ -47,7 +48,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        console.log(response)
         commit('SET_TOKEN', data.token)
         setToken(data.token)
         resolve()
@@ -62,17 +62,15 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
-
         if (!data) {
           reject('Verification failed, please Login again.')
         }
 
         const { name, avatar } = data
-
+        console.log(data)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         // commit('SET_USER_INFO', response.data.userInfo)
-        // commit('SET_MENUS', response.data.menus)
         // commit('SET_BUTTONS', response.data.buttons)
         resolve(data)
       }).catch(error => {

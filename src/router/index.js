@@ -12,13 +12,17 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
-    path: '/404',
-    component: () => import('@/views/404'),
-    hidden: true
+    path: '/error',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '404',
+        component: () => import('@/views/404')
+      }
+    ]
   },
-
   {
     path: '/',
     component: Layout,
@@ -31,7 +35,6 @@ export const constantRoutes = [
     }]
   }
   // 404 page must be placed at the end !!!
-
 ]
 
 export const asyncRoutes = [
@@ -130,7 +133,7 @@ export const asyncRoutes = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

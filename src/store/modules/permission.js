@@ -1,4 +1,41 @@
-import { asyncRoutes, constantRoutes } from '@/router'
+import { constantRoutes } from '@/router'
+import Layout from '@/layout'
+/**
+ * 递归创建动态路由
+ * @param {Array} menus 后台返回的用户拥有的菜单权限集合
+ */
+export function recursionRouter(menus) {
+  const dynamicRouters = []
+  menus.forEach(menu => {
+    const router = {
+      // vue缓存组件使用，保证唯一性，并且和组件名一致。暂时乱写。。。
+      // name: `${menus.name}`,
+      meta: {}
+    }
+    if (menu.parentId === 0) {
+      router.path = `/${menu.path}`
+      router.component = Layout
+      router.name = menu.name
+      router.meta.title = menu.name
+      router.meta.icon = menu.icon
+      router.meta.resources = menu.resources
+    } else {
+      router.path = menu.path
+      router.component = () => import(`@/views/${menu.component}`)
+      router.name = menu.name
+      router.meta.title = menu.name
+      router.meta.icon = menu.icon
+      router.meta.resources = menu.resources
+    }
+
+    // 有子路由
+    if (menu.children && menu.children.length > 0) {
+      router.children = recursionRouter(menu.children)
+    }
+    dynamicRouters.push(router)
+  })
+  return dynamicRouters
+}
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -47,16 +84,11 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit }, roles) {
+  generateRoutes({ commit }, menus) {
     return new Promise(resolve => {
-      // let accessedRoutes
-      // if (roles.includes('admin')) {
-      //   accessedRoutes = asyncRoutes || []
-      // } else {
-      //   accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-      // }
-      const errorRouter = { path: '*', redirect: '/404', hidden: true }
-      commit('SET_ROUTES', asyncRoutes.concat(errorRouter))
+      const errorRouter = { path: '*', redirect: '/error/404', hidden: true }
+      const asyncRoutes = recursionRouter(menus).concat(errorRouter)
+      commit('SET_ROUTES', asyncRoutes)
       resolve(asyncRoutes)
     })
   }
