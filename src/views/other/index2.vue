@@ -1,5 +1,5 @@
 <template>
-    <div>
-        H2
-    </div>
+  <div>
+    H2
+  </div>
 </template>
