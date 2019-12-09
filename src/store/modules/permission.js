@@ -16,16 +16,14 @@ export function recursionRouter(menus) {
       router.path = `/${menu.path}`
       router.component = Layout
       router.name = menu.name
-      router.meta.title = menu.name
-      router.meta.icon = menu.icon
-      router.meta.resources = menu.resources
+      router.meta.title = menu.meta.title
+      router.meta.icon = menu.meta.icon
     } else {
       router.path = menu.path
       router.component = () => import(`@/views/${menu.component}`)
       router.name = menu.name
-      router.meta.title = menu.name
-      router.meta.icon = menu.icon
-      router.meta.resources = menu.resources
+      router.meta.title = menu.meta.title
+      router.meta.icon = menu.meta.icon
     }
 
     // 有子路由

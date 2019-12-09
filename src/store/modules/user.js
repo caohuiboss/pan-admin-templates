@@ -1,27 +1,19 @@
 import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { resetRouter, constantRoutes } from '@/router'
+import { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
   name: '',
   id: 0,
   avatar: '',
-  userInfo: {}, // 用户信息
-  roles: [], // 角色
-  menus: [], // 菜单权限
-  buttons: [] // 按钮权限
+  user_info: {},
+  roles: [] // 角色
 }
 
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
-  },
-  SET_USER_INFO: (state, userInfo) => {
-    state.id = userInfo.id
-    state.nickname = userInfo.nickname
-    state.avatar = userInfo.avatar
-    state.userInfo = userInfo
   },
   SET_NAME: (state, name) => {
     state.name = name
@@ -32,12 +24,8 @@ const mutations = {
   SET_ROLES: (state, roles) => {
     state.roles = roles
   },
-  SET_BUTTONS: (state, buttons) => {
-    state.buttons = buttons
-  },
-  SET_ROUTES: (state, routes) => {
-    state.addRoutes = routes
-    state.routes = constantRoutes.concat(routes)
+  SET_USERINFO: (state, userinfo) => {
+    state.user_info = userinfo
   }
 }
 
@@ -65,13 +53,10 @@ const actions = {
         if (!data) {
           reject('Verification failed, please Login again.')
         }
-
         const { name, avatar } = data
-        console.log(data)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
-        // commit('SET_USER_INFO', response.data.userInfo)
-        // commit('SET_BUTTONS', response.data.buttons)
+        commit('SET_TOKEN', data)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -83,7 +68,6 @@ const actions = {
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       commit('SET_TOKEN', '')
-      commit('SET_USER_INFO', {})
       commit('SET_ROLES', [])
       removeToken()
       resetRouter()

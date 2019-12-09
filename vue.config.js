@@ -33,7 +33,7 @@ module.exports = {
       //   }
       // },
       '/api': {
-        target: `http://www.chmc.xyz:500/api/`,
+        target: `http://127.0.0.1:50000/api/`,
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
