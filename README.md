@@ -2,6 +2,8 @@
 
 因为完整版太多东西了 但是有些功能精简版又没有 所以移植了 固钉 过来 把原先本地路由改成了 后台路由 方便后续自己的使用
 
+[在线查看效果](http://www.chmc.xyz:9528)
+
 ## 添加配置 eslint + pretter 配置采用 pan 大佬的规则
 
 1. vs 安装插件 Prettier - Code formatter
