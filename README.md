@@ -5,7 +5,7 @@
 [在线查看效果](http://www.chmc.xyz:9528)
 
 
-## Eslint在VsCode 中如何自动格式化
+## Eslint在VsCode 中如何保存的时候自动格式化
 1. 首先先在vscode中安装插件   Eslint（自带）,Prettier-Code formatter(Esben Petersen) ,Vetur。
 2. 更改vscode中的 setting.json 数据
 > 以下是我的设置，可作参考
