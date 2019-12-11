@@ -9,11 +9,11 @@ const getters = {
   userInfo: state => state.user.userInfo,
   roles: state => state.user.roles,
   menus: state => state.user.menus,
-  buttons: state => state.user.buttons,
 
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
 
+  addRoutes: state => state.permission.addRoutes,
   permission_routes: state => state.permission.routes
 }
 export default getters

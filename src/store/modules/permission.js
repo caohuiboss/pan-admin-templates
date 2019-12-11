@@ -6,31 +6,30 @@ import Layout from '@/layout'
  */
 export function recursionRouter(menus) {
   const dynamicRouters = []
-  menus.forEach(menu => {
+  menus.forEach((menu, index) => {
     const router = {
       // vue缓存组件使用，保证唯一性，并且和组件名一致。暂时乱写。。。
       // name: `${menus.name}`,
       meta: {}
     }
-    if (menu.parentId === 0) {
-      router.path = `/${menu.path}`
+    // console.log(menu)
+    if (menu.MenuID === 1) {
+      router.path = `/${menu.MenuPath}`
       router.component = Layout
-      router.name = menu.name
-      router.meta.title = menu.name
-      router.meta.icon = menu.icon
-      router.meta.resources = menu.resources
+      // router.name = menu.MenuPath
+      router.meta.title = menu.MemuTitle
+      router.meta.icon = menu.MenuIcon
     } else {
-      router.path = menu.path
-      router.component = () => import(`@/views/${menu.component}`)
-      router.name = menu.name
-      router.meta.title = menu.name
-      router.meta.icon = menu.icon
-      router.meta.resources = menu.resources
+      router.path = menu.MenuPath
+      router.component = () => import(`@/views/${menu.Component}`)
+      router.name = menu.MenuPath
+      router.meta.title = menu.MemuTitle
+      router.meta.icon = menu.MenuIcon
     }
 
     // 有子路由
-    if (menu.children && menu.children.length > 0) {
-      router.children = recursionRouter(menu.children)
+    if (menu.Children && menu.Children.length > 0) {
+      router.children = recursionRouter(menu.Children)
     }
     dynamicRouters.push(router)
   })
@@ -67,7 +66,6 @@ export function filterAsyncRoutes(routes, roles) {
       res.push(tmp)
     }
   })
-
   return res
 }
 

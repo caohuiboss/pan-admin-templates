@@ -8,6 +8,7 @@
         <tags-view v-if="needTagsView" />
       </div>
       <app-main />
+      <!-- <div class="footer">备案信息</div> -->
     </div>
   </div>
 </template>
@@ -54,6 +55,17 @@ export default {
   @import "~@/styles/mixin.scss";
   @import "~@/styles/variables.scss";
 
+  .footer {
+    background-color: #B3C0D1;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+    width: 100%;
+    position: fixed;
+    z-index: 9999;
+    bottom: 0;
+  }
+
   .app-wrapper {
     @include clearfix;
     position: relative;
@@ -64,6 +76,7 @@ export default {
       top: 0;
     }
   }
+
   .drawer-bg {
     background: #000;
     opacity: 0.3;

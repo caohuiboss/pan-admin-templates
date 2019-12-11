@@ -11,7 +11,7 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar" />
+          <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -46,6 +46,7 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout')
+      this.$store.dispatch('tagsView/delAllViews')
       this.$router.push(`/login`)
     }
   }

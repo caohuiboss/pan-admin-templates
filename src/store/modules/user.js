@@ -1,16 +1,12 @@
 import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { resetRouter, constantRoutes } from '@/router'
+import { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
   name: '',
-  id: 0,
-  avatar: '',
-  userInfo: {}, // 用户信息
-  roles: [], // 角色
-  menus: [], // 菜单权限
-  buttons: [] // 按钮权限
+  avatar: '' || 'https://img.zcool.cn/community/0117825857a100a801219c778d2554.jpg@1280w_1l_2o_100sh.jpg',
+  userInfo: {} // 用户信息
 }
 
 const mutations = {
@@ -18,9 +14,6 @@ const mutations = {
     state.token = token
   },
   SET_USER_INFO: (state, userInfo) => {
-    state.id = userInfo.id
-    state.nickname = userInfo.nickname
-    state.avatar = userInfo.avatar
     state.userInfo = userInfo
   },
   SET_NAME: (state, name) => {
@@ -28,16 +21,6 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
-  },
-  SET_ROLES: (state, roles) => {
-    state.roles = roles
-  },
-  SET_BUTTONS: (state, buttons) => {
-    state.buttons = buttons
-  },
-  SET_ROUTES: (state, routes) => {
-    state.addRoutes = routes
-    state.routes = constantRoutes.concat(routes)
   }
 }
 
@@ -46,10 +29,10 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ UserName: username.trim(), UserPwd: password }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+        commit('SET_TOKEN', data.Token)
+        setToken(data.Token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -62,17 +45,9 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
-        if (!data) {
-          reject('验证失败 请重新登陆.')
-        }
-
-        const { name, avatar } = data
-        console.log(data)
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        // commit('SET_USER_INFO', response.data.userInfo)
-        // commit('SET_BUTTONS', response.data.buttons)
-        resolve(data)
+        commit('SET_NAME', data.Userinfo[0].UserName)
+        commit('SET_USER_INFO', data.Userinfo)
+        resolve(data.Menus)
       }).catch(error => {
         reject(error)
       })
@@ -84,7 +59,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       commit('SET_TOKEN', '')
       commit('SET_USER_INFO', {})
-      commit('SET_ROLES', [])
+      commit('SET_NAME', '')
       removeToken()
       resetRouter()
       resolve()
